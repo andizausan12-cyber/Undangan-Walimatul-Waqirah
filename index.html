@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Walimatul Waqirah - Kel. Andi Hasbullah</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            overflow-x: hidden;
+        }
+        .font-script {
+            font-family: 'Great Vibes', cursive;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Custom Background Pattern */
+        .bg-pattern {
+            background-color: #f7f3e8;
+            background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+        }
+
+        .music-btn {
+            animation: spin 4s linear infinite;
+        }
+        
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .paused {
+            animation-play-state: paused;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-pattern text-gray-700 antialiased">
+
+    <!-- Audio Player (Hidden) - Menggunakan instrumen santai -->
+    <audio id="bgMusic" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/10/18/audio_31c2730e64.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Floating Music Control -->
+    <div id="musicControl" class="fixed bottom-6 right-6 z-50 hidden">
+        <button onclick="toggleMusic()" class="w-12 h-12 bg-[#5F6F52] text-[#FEFAE0] rounded-full shadow-lg flex items-center justify-center focus:outline-none music-btn" id="musicBtnIcon">
+            <i class="fas fa-compact-disc text-xl"></i>
+        </button>
+    </div>
+
+    <!-- COVER SCREEN -->
+    <div id="cover" class="fixed inset-0 z-50 bg-[#5F6F52] flex flex-col items-center justify-center text-[#FEFAE0] transition-transform duration-1000">
+        <div class="text-center px-6" data-aos="fade-up">
+            <h3 class="text-lg mb-2 uppercase tracking-widest">Undangan</h3>
+            <h1 class="font-script text-5xl md:text-7xl mb-4">Walimatul Waqirah</h1>
+            <div class="w-24 h-1 bg-[#A9B388] mx-auto mb-6"></div>
+            <h2 class="font-serif text-2xl mb-8">Keluarga Andi Hasbullah</h2>
+            
+            <p class="mb-4 text-sm italic">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+            <!-- ID ditambahkan di sini untuk dimanipulasi Javascript -->
+            <div id="guestNameDisplay" class="bg-[#FEFAE0] text-[#5F6F52] px-6 py-2 rounded-lg font-bold mb-8 inline-block shadow-lg">
+                Tamu Undangan
+            </div>
+            
+            <br>
+            <button onclick="openInvitation()" class="bg-[#B99470] hover:bg-[#A98460] text-white px-8 py-3 rounded-full font-bold shadow-lg transition transform hover:scale-105 animate-bounce">
+                <i class="fas fa-envelope-open mr-2"></i> Buka Undangan
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="hidden opacity-0 transition-opacity duration-1000" id="mainContent">
+        
+        <!-- Hero Section -->
+        <!-- Mengubah Background Image menjadi gambar Rumah Kartun/Animasi -->
+        <header class="relative h-screen flex items-center justify-center text-center bg-cover bg-center" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://cdn.pixabay.com/photo/2017/08/06/15/13/house-2593570_1280.jpg');">
+            <div class="container mx-auto px-4 text-white">
+                <p class="text-lg md:text-xl mb-4 tracking-widest" data-aos="fade-down">SYUKURAN RUMAH BARU</p>
+                <h1 class="font-script text-6xl md:text-8xl mb-6 text-[#FEFAE0]" data-aos="zoom-in">Walimatul Waqirah</h1>
+                <p class="max-w-xl mx-auto text-sm md:text-base leading-relaxed font-bold drop-shadow-md" data-aos="fade-up">
+                    "Rumahku Surgaku. Semoga Allah SWT memberkahi rumah ini dan menjadikannya tempat bernaung yang penuh ketenangan dan ibadah."
+                </p>
+                <div class="mt-8">
+                    <i class="fas fa-chevron-down text-3xl animate-bounce"></i>
+                </div>
+            </div>
+            <!-- Wave Divider -->
+            <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
+                <svg class="relative block w-full h-[50px] md:h-[100px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-[#f7f3e8]"></path>
+                </svg>
+            </div>
+        </header>
+
+        <!-- Salam & Intro -->
+        <section class="py-16 px-4 text-center">
+            <div class="container mx-auto max-w-2xl" data-aos="fade-up">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/Basmala.svg" alt="Bismillah" class="w-48 mx-auto mb-6 filter opacity-70">
+                <h2 class="font-serif text-3xl text-[#5F6F52] mb-6 font-bold">Assalamu’alaikum Wr. Wb.</h2>
+                <p class="text-gray-600 leading-relaxed mb-6">
+                    Dengan memohon Rahmat dan Ridho Allah SWT, serta sebagai wujud rasa syukur kami, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara <b>Walimatul Waqirah</b> (syukuran menempati kediaman baru) kami.
+                </p>
+                <div class="p-6 border-2 border-[#A9B388] rounded-lg inline-block">
+                    <p class="font-bold text-[#5F6F52]">Keluarga Besar</p>
+                    <h3 class="font-serif text-3xl mt-2 text-[#B99470]">Andi Hasbullah</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detail Acara -->
+        <section class="py-16 bg-[#5F6F52] text-[#FEFAE0] relative">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="font-serif text-3xl mb-12 font-bold" data-aos="fade-down">Waktu & Tempat</h2>
+                
+                <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                    <!-- Date -->
+                    <div class="bg-[#FEFAE0] text-[#5F6F52] p-8 rounded-xl shadow-xl transform hover:-translate-y-2 transition duration-300" data-aos="flip-left" data-aos-delay="100">
+                        <i class="far fa-calendar-check text-4xl mb-4 text-[#B99470]"></i>
+                        <h3 class="font-bold text-xl mb-2">MINGGU</h3>
+                        <p class="text-2xl font-serif font-bold mb-2">28 Des 2025</p>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="bg-[#FEFAE0] text-[#5F6F52] p-8 rounded-xl shadow-xl transform hover:-translate-y-2 transition duration-300" data-aos="flip-left" data-aos-delay="200">
+                        <i class="far fa-clock text-4xl mb-4 text-[#B99470]"></i>
+                        <h3 class="font-bold text-xl mb-2">PUKUL</h3>
+                        <p class="text-2xl font-serif font-bold mb-2">10.00 WITA</p>
+                        <p class="text-sm">Sampai Selesai</p>
+                    </div>
+
+                    <!-- Place -->
+                    <div class="bg-[#FEFAE0] text-[#5F6F52] p-8 rounded-xl shadow-xl transform hover:-translate-y-2 transition duration-300" data-aos="flip-left" data-aos-delay="300">
+                        <i class="fas fa-map-marked-alt text-4xl mb-4 text-[#B99470]"></i>
+                        <h3 class="font-bold text-xl mb-2">LOKASI</h3>
+                        <p class="font-serif font-bold">Rumah Bpk. Andi Hasbullah</p>
+                        <p class="text-sm mt-2">Sangatta Utara, Kutai Timur</p>
+                    </div>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div class="mt-16 text-center" data-aos="zoom-in">
+                    <p class="mb-4 text-sm tracking-widest">MENUJU ACARA</p>
+                    <div id="countdown" class="flex flex-wrap justify-center gap-4 text-[#5F6F52]">
+                        <!-- JS will populate this -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Map Location -->
+        <section class="py-16 px-4 text-center bg-white">
+            <div class="container mx-auto max-w-4xl" data-aos="fade-up">
+                <h2 class="font-serif text-3xl text-[#5F6F52] mb-8 font-bold">Peta Lokasi</h2>
+                <p class="mb-6 text-gray-600">Jalan Tribata Gang Pelangi 2 F, Kec. Sangatta Utara, Kab. Kutai Timur, Kalimantan Timur</p>
+                
+                <div class="w-full h-64 bg-gray-200 rounded-lg shadow-inner mb-6 flex items-center justify-center overflow-hidden relative">
+                     <!-- Embedded Map Placeholder (Since precise coordinates for specific gang are best found via search link) -->
+                     <iframe 
+                        width="100%" 
+                        height="100%" 
+                        frameborder="0" 
+                        scrolling="no" 
+                        marginheight="0" 
+                        marginwidth="0" 
+                        src="https://maps.google.com/maps?q=Sangatta+Utara+Kutai+Timur&t=&z=13&ie=UTF8&iwloc=&output=embed">
+                    </iframe>
+                    <div class="absolute bottom-0 left-0 right-0 bg-white/80 p-2 text-xs">
+                        *Tampilan area umum Sangatta Utara
+                    </div>
+                </div>
+
+                <a href="https://www.google.com/maps/search/?api=1&query=Jalan+Tribata+gang+pelangi+2+F+Sangatta+Utara+Kutai+Timur" target="_blank" 
+                   class="inline-flex items-center bg-[#5F6F52] text-white px-8 py-3 rounded-full hover:bg-[#4a5740] transition shadow-lg">
+                    <i class="fas fa-location-arrow mr-2"></i> Buka Google Maps
+                </a>
+            </div>
+        </section>
+
+        <!-- RSVP / Ucapan -->
+        <section class="py-16 px-4 bg-[#f7f3e8]">
+            <div class="container mx-auto max-w-lg bg-white p-8 rounded-xl shadow-lg border-t-4 border-[#B99470]" data-aos="fade-up">
+                <h2 class="font-serif text-2xl text-center text-[#5F6F52] mb-6 font-bold">Konfirmasi Kehadiran</h2>
+                <p class="text-center text-sm text-gray-500 mb-6">Mohon konfirmasi kehadiran atau kirimkan ucapan doa melalui WhatsApp.</p>
+                
+                <form onsubmit="sendToWA(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nama</label>
+                        <input type="text" id="guestName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#5F6F52] focus:ring focus:ring-[#5F6F52] focus:ring-opacity-50 p-2 border" placeholder="Nama Anda">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Jumlah Hadir</label>
+                        <select id="guestCount" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#5F6F52] focus:ring focus:ring-[#5F6F52] focus:ring-opacity-50 p-2 border">
+                            <option value="1">1 Orang</option>
+                            <option value="2">2 Orang</option>
+                            <option value="Sepertinya Tidak Bisa">Maaf, Tidak Bisa Hadir</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Ucapan / Doa</label>
+                        <textarea id="guestMsg" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#5F6F52] focus:ring focus:ring-[#5F6F52] focus:ring-opacity-50 p-2 border" placeholder="Doa untuk rumah baru..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3 px-4 rounded-lg transition flex items-center justify-center">
+                        <i class="fab fa-whatsapp text-xl mr-2"></i> Kirim ke WhatsApp
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-[#5F6F52] text-[#FEFAE0] py-8 text-center">
+            <p class="font-serif italic text-lg mb-2">Terima Kasih</p>
+            <p class="text-sm opacity-80 mb-4">Atas doa & kehadiran Bapak/Ibu/Saudara/i</p>
+            <h2 class="font-script text-3xl">Kel. Andi Hasbullah</h2>
+            <br>
+            <p class="text-xs opacity-50 mt-8">&copy; 2025 Undangan Digital</p>
+        </footer>
+    </main>
+
+    <script>
+        // Init AOS Animation
+        AOS.init({
+            duration: 1000,
+            once: true,
+        });
+
+        // Initialize Dynamic Guest Name
+        window.onload = function() {
+            // Mengambil nama dari URL (contoh: undangan.html?to=Budi)
+            const urlParams = new URLSearchParams(window.location.search);
+            const guest = urlParams.get('to');
+            
+            if (guest) {
+                // Set nama di Cover Depan
+                document.getElementById('guestNameDisplay').innerText = guest;
+                // Auto-fill nama di Form RSVP
+                document.getElementById('guestName').value = guest;
+            }
+        }
+
+        // Open Invitation Logic
+        function openInvitation() {
+            const cover = document.getElementById('cover');
+            const main = document.getElementById('mainContent');
+            const musicControl = document.getElementById('musicControl');
+            
+            // Slide cover up
+            cover.style.transform = 'translateY(-100%)';
+            
+            // Show main content
+            main.classList.remove('hidden');
+            setTimeout(() => {
+                main.classList.remove('opacity-0');
+            }, 300);
+
+            // Show music control
+            musicControl.classList.remove('hidden');
+
+            // Play Music
+            toggleMusic(true);
+        }
+
+        // Music Logic
+        const audio = document.getElementById('bgMusic');
+        const btnIcon = document.getElementById('musicBtnIcon');
+        let isPlaying = false;
+
+        function toggleMusic(forcePlay = false) {
+            if (forcePlay || !isPlaying) {
+                audio.play();
+                isPlaying = true;
+                btnIcon.classList.remove('paused');
+            } else {
+                audio.pause();
+                isPlaying = false;
+                btnIcon.classList.add('paused');
+            }
+        }
+
+        // Countdown Logic (Target: 28 Dec 2025 10:00 WITA)
+        // WITA is UTC+8. 
+        const targetDate = new Date('2025-12-28T10:00:00+08:00').getTime();
+
+        const countdownInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("countdown").innerHTML = "<div class='text-xl font-bold'>Alhamdulillah, Acara Telah Dimulai/Selesai</div>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            const timeBoxClass = "bg-[#FEFAE0] text-[#5F6F52] w-20 p-2 rounded-lg shadow-md flex flex-col items-center";
+            const numberClass = "text-2xl font-bold";
+            const labelClass = "text-xs uppercase";
+
+            document.getElementById("countdown").innerHTML = `
+                <div class="${timeBoxClass}">
+                    <span class="${numberClass}">${days}</span>
+                    <span class="${labelClass}">Hari</span>
+                </div>
+                <div class="${timeBoxClass}">
+                    <span class="${numberClass}">${hours}</span>
+                    <span class="${labelClass}">Jam</span>
+                </div>
+                <div class="${timeBoxClass}">
+                    <span class="${numberClass}">${minutes}</span>
+                    <span class="${labelClass}">Menit</span>
+                </div>
+                <div class="${timeBoxClass}">
+                    <span class="${numberClass}">${seconds}</span>
+                    <span class="${labelClass}">Detik</span>
+                </div>
+            `;
+        }, 1000);
+
+        // WhatsApp Logic
+        function sendToWA(e) {
+            e.preventDefault();
+            const name = document.getElementById('guestName').value;
+            const count = document.getElementById('guestCount').value;
+            const msg = document.getElementById('guestMsg').value;
+            
+            // Ganti nomor ini dengan nomor WA Pak Andi Hasbullah (format 62...)
+            const phoneNumber = "6281234567890"; 
+            
+            const text = `Assalamu'alaikum, saya *${name}*.\n\nKonfirmasi kehadiran Walimatul Waqirah:\nJumlah: ${count}\n\nUcapan: ${msg}`;
+            
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
